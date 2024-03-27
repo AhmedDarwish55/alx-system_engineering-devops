@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-#start apache2 inside docker
+# Fix for the first web stack debugging_0 server 
+
 service apache2 start
