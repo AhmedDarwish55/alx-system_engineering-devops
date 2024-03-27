@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# Fix for the first web stack debugging_0 server 
-
+# Start Apache so as to return a
+# page conatining Hello Holberton
 service apache2 start
