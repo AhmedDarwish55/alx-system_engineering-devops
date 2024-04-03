@@ -1,24 +1,10 @@
 #!/usr/bin/env bash
-# Configure nginx web server with custom response header
-
-INDEX_COPY="Holberton School for the win!"
-ERROR_COPY="Ceci n'est pas une page - 404"
+# Bash script that setup a nginx web server on our server, redirection, 404, header
 
 sudo apt-get -y update
 sudo apt-get -y install nginx
 
-echo "$INDEX_COPY" | sudo tee /var/www/html/index.nginx-debian.html > /dev/null
-echo "$ERROR_COPY" | sudo tee /var/www/html/custom_404.html > /dev/null
+repl_str="\tlocation \/ {\n\t\tadd_header X-Served-By $HOSTNAME;"
+sudo sed -i "s/\tlocation \/ {/$repl_str/" /etc/nginx/sites-available/default
 
-# config redirection
-sudo sed -i '/^\sserver_name.*/a \        rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
-
-# config custom 404
-sudo sed -i '/^\slocation.*/i \        error_page 404 /custom_404.html;' /etc/nginx/sites-available/default
-
-# shellcheck disable=SC2154
-# config custom response header
-sudo sed -i '/^\slocation.*/i \        add_header X-Served-By $hostname;' /etc/nginx/sites-available/default
-
-# run server
-sudo service nginx start
+sudo service nginx restart
